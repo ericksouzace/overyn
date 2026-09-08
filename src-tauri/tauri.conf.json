@@ -30,7 +30,6 @@
   "bundle": {
     "active": true,
     "targets": "all",
-    "icon": ["icons/icon.ico"],
     "category": "DeveloperTool",
     "shortDescription": "Perfis isolados e configuração de rede por perfil",
     "longDescription": "Overyn organiza perfis de navegação separados e configurações de rede individuais no Windows."
