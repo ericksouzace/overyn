@@ -1,0 +1,44 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Overyn",
+  "version": "0.4.0",
+  "identifier": "com.ericklabs.overyn",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "security": {
+      "csp": "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self' ipc: http://ipc.localhost"
+    },
+    "windows": [
+      {
+        "title": "Overyn",
+        "width": 1440,
+        "height": 900,
+        "minWidth": 1080,
+        "minHeight": 720,
+        "center": true,
+        "resizable": true,
+        "fullscreen": false,
+        "decorations": true
+      }
+    ]
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "category": "DeveloperTool",
+    "shortDescription": "Perfis isolados e configuração de rede por perfil",
+    "longDescription": "Overyn organiza perfis de navegação separados e configurações de rede individuais no Windows."
+  }
+}

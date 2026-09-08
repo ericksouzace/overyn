@@ -1,8 +1,8 @@
 {
-  "name": "sorenza-desktop",
-  "version": "0.3.0",
+  "name": "overyn-desktop",
+  "version": "0.4.0",
   "private": true,
-  "description": "Sorenza Desktop — AI engineering mission control for local projects and GitHub Codespaces.",
+  "description": "Overyn Desktop — isolated browser profiles and per-profile network configuration.",
   "type": "module",
   "scripts": {
     "dev": "vite",
