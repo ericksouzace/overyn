@@ -31,7 +31,15 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
       - name: Lint
-        run: npm run lint
+        id: lint
+        run: npx eslint . --format json --output-file eslint-report.json
+      - name: Upload lint diagnostics
+        if: failure() && steps.lint.conclusion == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
+          name: eslint-report
+          path: eslint-report.json
+          retention-days: 1
       - name: Test frontend
         run: npm test
       - name: Test Rust
