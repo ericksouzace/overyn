@@ -1,0 +1,15 @@
+{
+  "name": "Overyn",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/rust:1": {}
+  },
+  "postCreateCommand": "npm ci",
+  "forwardPorts": [1420],
+  "portsAttributes": { "1420": { "label": "Overyn Vite", "onAutoForward": "openPreview" } },
+  "customizations": {
+    "vscode": {
+      "extensions": ["rust-lang.rust-analyzer", "dbaeumer.vscode-eslint", "esbenp.prettier-vscode"]
+    }
+  }
+}

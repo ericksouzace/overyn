@@ -1,136 +1,66 @@
-# Sorenza Desktop 0.3.0
+# Overyn Desktop 0.4.0
 
-Sorenza Desktop is the application-first evolution of the Sorenza VS Code extension. The desktop app is the product; VS Code/Codespaces become connected execution environments rather than the UI boundary.
+Overyn é um aplicativo desktop para organizar perfis de navegação separados e configurações de rede individuais por perfil.
 
-## Product thesis
+## Entregue na versão 0.4
 
-A user describes an outcome. Sorenza creates a mission contract, prepares an isolated candidate workspace, coordinates AI work, executes independent quality gates, collects evidence, and only then offers a verified change for promotion.
+- interface React + TypeScript em português;
+- shell nativo Tauri 2 para Windows;
+- criação, edição e remoção de perfis;
+- diretório persistente de navegador separado para cada perfil;
+- abertura e encerramento de Microsoft Edge, Google Chrome ou Brave;
+- página inicial opcional por perfil;
+- cadastro de proxies HTTP, HTTPS e SOCKS5;
+- teste real de IP e latência pelo backend nativo;
+- verificação de proxy antes da abertura do perfil;
+- comportamento de falha fechada quando uma proxy configurada não responde;
+- ponte local para SOCKS5 com ou sem usuário/senha;
+- senha de proxy mantida somente na memória da sessão e excluída do armazenamento local e dos backups;
+- site público em `website/` pronto para Vercel;
+- workflow de validação e build do instalador NSIS no Windows;
+- workflow de release por tag `v*` com publicação automática do `.exe` no GitHub Releases;
+- configuração de GitHub Codespaces em `.devcontainer/`.
 
-```text
-Objective
-  -> Mission Contract
-  -> Trust Kernel
-  -> Candidate Workspace
-  -> Agent Runtime
-  -> Evidence Gate
-  -> Verified Promotion
-```
+## Comportamento de rede
 
-The model is never the final authority for PASS.
+Quando um perfil possui proxy e a verificação está ativa, o navegador só é iniciado depois que a conexão configurada retorna um IP público válido. Não é adicionada uma regra de fallback direto ao navegador. SOCKS5 é encaminhado por uma ponte HTTP local do próprio Overyn para permitir autenticação sem colocar credenciais na linha de comando.
 
-## Current 0.3.0 deliverable
+Em proxies HTTP/HTTPS autenticadas, o navegador Chromium pode solicitar as credenciais na primeira conexão. A senha não é salva em `localStorage`.
 
-Implemented and validated in this package:
+## Escopo
 
-- desktop-first React interface with progressive disclosure;
-- Tauri 2 shell source with a minimal capability surface;
-- GitHub Codespaces discovery/opening commands through `gh`;
-- typed domain contracts for missions, evidence, skills and projects;
-- deterministic mission state machine;
-- deterministic Trust Kernel baseline;
-- deterministic Evidence Gate baseline;
-- Codespaces connector with candidate Git worktrees under `/tmp/sorenza`;
-- structured read/write helpers for candidate files;
-- fixed quality gates (`typecheck`, `lint`, `test`, `build`), not arbitrary terminal access;
-- diff extraction from the candidate workspace;
-- OpenAI Agents SDK runtime adapters for sandbox and Codespaces tool orchestration;
-- Skills, Agents and Evidence product surfaces;
-- responsive UI and `prefers-reduced-motion` support.
+Overyn fornece separação de dados de sessão e configuração de rede. O projeto não implementa spoofing de fingerprint, invisibilidade, bypass de antifraude ou mecanismos destinados a contornar políticas de serviços externos.
 
-Not yet production-complete:
+## Desenvolvimento
 
-- native Tauri installer was not compiled in the current build container because Rust/system WebView build dependencies are unavailable there;
-- the Codespaces connector was typechecked and unit-tested for validation, but not exercised against a live authenticated `gh` session in this environment;
-- full end-to-end mission persistence, signed promotion, Stronghold-backed API-key UX and multiagent execution are architecture-ready but not fully wired into the UI;
-- visual/browser evidence is represented in the product model but Playwright execution is not yet connected to the mission worker.
-
-## Architecture
-
-```text
-┌───────────────────────────────────────────────┐
-│ Sorenza Desktop                             │
-│ React UI + Design System                      │
-└──────────────────────┬────────────────────────┘
-                       │ typed commands/events
-┌──────────────────────▼────────────────────────┐
-│ Tauri Security Shell                          │
-│ minimal commands + capabilities + Stronghold  │
-└──────────────────────┬────────────────────────┘
-                       │
-┌──────────────────────▼────────────────────────┐
-│ Mission Core                                  │
-│ contract · state · trust · budgets · evidence │
-└───────────────┬───────────────────┬───────────┘
-                │                   │
-       ┌────────▼────────┐  ┌───────▼──────────┐
-       │ Agent Runtime   │  │ Project Connector│
-       │ OpenAI adapter  │  │ Codespaces / local│
-       └────────┬────────┘  └───────┬──────────┘
-                │                   │
-                └─────────┬─────────┘
-                          ▼
-                 Candidate Workspace
-                          │
-                          ▼
-                    Evidence Gate
-                          │
-                          ▼
-                   Verified Promotion
-```
-
-See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) and [`docs/DESIGN_SYSTEM.md`](docs/DESIGN_SYSTEM.md).
-
-## Development
-
-Prerequisites for the web shell:
-
-- Node.js 22+
-- npm 10+
+Requisitos: Node.js 22+, npm 10+ e, para o desktop, Rust + pré-requisitos oficiais do Tauri.
 
 ```bash
-npm install
-npm run check
+npm ci
 npm run dev
 ```
 
-For native Tauri development, install the official Tauri prerequisites for your platform plus Rust. The app also expects GitHub CLI (`gh`) when connecting to GitHub Codespaces.
+Validação web:
+
+```bash
+npm run typecheck
+npm run lint
+npm test
+npm run build
+```
+
+Desktop:
 
 ```bash
 npm run tauri dev
 ```
 
-## Quality gates
+## Instalador Windows
 
-```bash
-npm run typecheck
-npm run lint
-npm run test
-npm run test:coverage
-npm run build
-```
+Pull requests e pushes executam `.github/workflows/windows-build.yml`. O artefato gerado é o instalador NSIS `.exe`.
 
-## Security stance
+Para publicar uma versão, crie uma tag como `v0.4.0`. O workflow `.github/workflows/release.yml` gera e anexa o instalador ao GitHub Releases. Os botões de download do site procuram automaticamente o `.exe` da release mais recente.
 
-- The renderer does not receive a generic shell bridge.
-- Tauri frontend permissions stay minimal.
-- Codespace names and workspace paths are validated.
-- Candidate work is isolated from the primary checkout with a Git worktree.
-- Remote quality commands are selected from a fixed gate enum.
-- The AI can submit a candidate report, but cannot declare final PASS.
-- Production/deploy capabilities do not belong in Core v1.
+## Vercel
 
-A candidate Git worktree is not equivalent to a kernel sandbox. Production autonomy still requires stronger workload isolation and egress controls.
-
-## Design principle
-
-**Maximum capability behind the interface, minimum cognitive load in front of it.**
-
-The main surface shows only:
-
-1. project;
-2. objective;
-3. mission state;
-4. specialists actually working;
-5. evidence required for completion.
-
-Advanced controls remain available through contextual surfaces instead of permanent dashboard clutter.
+Use `website` como Root Directory, Framework Preset `Other`, sem Build Command e Output Directory `.`.

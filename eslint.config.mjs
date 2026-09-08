@@ -26,7 +26,15 @@ export default tseslint.config(
       '@typescript-eslint/no-floating-promises': 'error',
       '@typescript-eslint/consistent-type-imports': 'error',
       '@typescript-eslint/no-misused-promises': 'error',
+      '@typescript-eslint/no-confusing-void-expression': 'off',
+      '@typescript-eslint/no-unnecessary-type-parameters': 'off',
+      '@typescript-eslint/restrict-template-expressions': 'off',
     },
+  },
+  {
+    files: ['website/**/*.js'],
+    ...tseslint.configs.disableTypeChecked,
+    languageOptions: { globals: { ...globals.browser } },
   },
   {
     files: ['*.config.ts'],
