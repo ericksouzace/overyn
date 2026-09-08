@@ -2,9 +2,9 @@ import type { ProxyConfig } from '../data/overyn';
 
 export interface ProxyTestResult {
   ok: boolean;
-  ip?: string;
-  latencyMs?: number;
-  error?: string;
+  ip?: string | undefined;
+  latencyMs?: number | undefined;
+  error?: string | undefined;
 }
 
 export async function testProxyConnection(proxy: ProxyConfig): Promise<ProxyTestResult> {

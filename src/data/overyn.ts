@@ -8,10 +8,10 @@ export interface ProxyConfig {
   protocol: ProxyProtocol;
   host: string;
   port: number;
-  username?: string;
-  password?: string;
-  lastIp?: string;
-  latencyMs?: number;
+  username?: string | undefined;
+  password?: string | undefined;
+  lastIp?: string | undefined;
+  latencyMs?: number | undefined;
   status: 'untested' | 'online' | 'offline';
 }
 
@@ -19,7 +19,7 @@ export interface BrowserProfile {
   id: string;
   name: string;
   note: string;
-  proxyId?: string;
+  proxyId?: string | undefined;
   status: 'ready' | 'running';
   createdAt: string;
 }

@@ -10,7 +10,18 @@ interface SettingsPageProps {
 
 export function SettingsPage({ profiles, proxies, security, onReset }: SettingsPageProps) {
   const exportData = () => {
-    const payload = JSON.stringify({ exportedAt: new Date().toISOString(), profiles, proxies: proxies.map(({ password: _password, ...proxy }) => proxy), security }, null, 2);
+    const safeProxies = proxies.map((proxy) => ({
+      id: proxy.id,
+      name: proxy.name,
+      protocol: proxy.protocol,
+      host: proxy.host,
+      port: proxy.port,
+      username: proxy.username,
+      lastIp: proxy.lastIp,
+      latencyMs: proxy.latencyMs,
+      status: proxy.status,
+    }));
+    const payload = JSON.stringify({ exportedAt: new Date().toISOString(), profiles, proxies: safeProxies, security }, null, 2);
     const blob = new Blob([payload], { type: 'application/json' });
     const href = URL.createObjectURL(blob);
     const anchor = document.createElement('a');

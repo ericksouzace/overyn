@@ -4,7 +4,7 @@ import type { BrowserProfile, ProxyConfig } from '../data/overyn';
 
 interface ProfileModalProps {
   open: boolean;
-  profile?: BrowserProfile;
+  profile?: BrowserProfile | undefined;
   proxies: ProxyConfig[];
   onClose: () => void;
   onSave: (profile: BrowserProfile) => void;

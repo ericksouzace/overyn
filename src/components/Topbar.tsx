@@ -9,7 +9,7 @@ export function Topbar() {
         <kbd>Ctrl K</kbd>
       </div>
       <div className="topbar-actions">
-        <button className="icon-button" title="Notificações" aria-label="Notificações"><Bell size={17} /></button>
+        <button className="icon-button" title="Notificações" aria-label="Notificações" onClick={() => window.alert('Nenhuma notificação nova.')}><Bell size={17} /></button>
         <span className="connection-state"><i /> Desktop conectado</span>
       </div>
     </header>
