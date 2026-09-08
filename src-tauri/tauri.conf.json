@@ -13,25 +13,25 @@
     "security": {
       "csp": "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self' ipc: http://ipc.localhost"
     },
-    "windows": [
-      {
-        "title": "Overyn",
-        "width": 1440,
-        "height": 900,
-        "minWidth": 1080,
-        "minHeight": 720,
-        "center": true,
-        "resizable": true,
-        "fullscreen": false,
-        "decorations": true
-      }
-    ]
+    "windows": [{
+      "label": "main",
+      "title": "Overyn",
+      "width": 1440,
+      "height": 900,
+      "minWidth": 1080,
+      "minHeight": 720,
+      "center": true,
+      "resizable": true,
+      "fullscreen": false,
+      "decorations": true
+    }]
   },
   "bundle": {
     "active": true,
-    "targets": "all",
-    "category": "DeveloperTool",
-    "shortDescription": "Perfis isolados e configuração de rede por perfil",
-    "longDescription": "Overyn organiza perfis de navegação separados e configurações de rede individuais no Windows."
+    "targets": ["nsis"],
+    "category": "Utility",
+    "shortDescription": "Perfis separados e configuração de rede por perfil",
+    "longDescription": "Overyn organiza perfis de navegação separados e configurações de rede individuais no Windows.",
+    "icon": ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.ico"]
   }
 }
