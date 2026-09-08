@@ -29,6 +29,11 @@ export default tseslint.config(
     },
   },
   {
+    files: ['website/**/*.js'],
+    ...tseslint.configs.disableTypeChecked,
+    languageOptions: { globals: { ...globals.browser } },
+  },
+  {
     files: ['*.config.ts'],
     languageOptions: { globals: { ...globals.node } },
     rules: {
