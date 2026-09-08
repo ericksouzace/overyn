@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { OverviewPage } from './components/OverviewPage';
 import { ProfileModal } from './components/ProfileModal';
 import { ProfilesPage } from './components/ProfilesPage';
@@ -28,7 +28,7 @@ export default function App() {
   const [toast, setToast] = useState<string>();
 
   useEffect(() => saveStored(PROFILE_KEY, profiles.map((profile) => ({ ...profile, status: 'ready' as const }))), [profiles]);
-  useEffect(() => saveStored(PROXY_KEY, proxies.map(({ password: _password, ...proxy }) => proxy)), [proxies]);
+  useEffect(() => saveStored(PROXY_KEY, proxies.map((proxy) => ({ ...proxy, password: undefined }))), [proxies]);
   useEffect(() => saveStored(SECURITY_KEY, security), [security]);
   useEffect(() => { if (!toast) return; const timeout = window.setTimeout(() => setToast(undefined), 4200); return () => window.clearTimeout(timeout); }, [toast]);
 
@@ -88,7 +88,7 @@ export default function App() {
     } finally { setProfileActionId(undefined); }
   };
 
-  let page;
+  let page: ReactNode;
   if (active === 'overview') page = <OverviewPage profiles={profiles} proxies={proxies} onCreateProfile={() => setProfileModal({ open: true })} onNavigateProfiles={() => setActive('profiles')} onNavigateProxies={() => setActive('proxies')} />;
   else if (active === 'profiles') page = <ProfilesPage profiles={profiles} proxies={proxies} actionId={profileActionId} onCreate={() => setProfileModal({ open: true })} onEdit={(profile) => setProfileModal({ open: true, profile })} onToggle={handleProfileToggle} onDelete={handleDeleteProfile} />;
   else if (active === 'proxies') page = <ProxiesPage proxies={proxies} testingId={testingId} onCreate={() => setProxyModal({ open: true })} onEdit={(proxy) => setProxyModal({ open: true, proxy })} onDelete={(id) => { if (!window.confirm('Excluir esta proxy?')) return; setProxies((items) => items.filter((proxy) => proxy.id !== id)); setProfiles((items) => items.map((profile) => profile.proxyId === id ? { ...profile, proxyId: undefined } : profile)); }} onTest={handleTestProxy} />;

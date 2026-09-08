@@ -10,7 +10,7 @@ interface SettingsPageProps {
 
 export function SettingsPage({ profiles, proxies, security, onReset }: SettingsPageProps) {
   const exportData = () => {
-    const safeProxies = proxies.map(({ password: _password, ...proxy }) => proxy);
+    const safeProxies = proxies.map((proxy) => ({ ...proxy, password: undefined }));
     const payload = JSON.stringify({ exportedAt: new Date().toISOString(), profiles, proxies: safeProxies, security }, null, 2);
     const blob = new Blob([payload], { type: 'application/json' });
     const href = URL.createObjectURL(blob);
